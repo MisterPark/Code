@@ -1,0 +1,13 @@
+﻿  Character.cpp
+  GameObject.cpp
+  Monster.cpp
+  NPC.cpp
+  ObjcetManager.cpp
+  Player.cpp
+  TextBox.cpp
+c:\users\user\desktop\쥬신국비내용\0525\0525\textbox.cpp(21): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\user\desktop\쥬신국비내용\0525\0525\textbox.cpp(65): warning C4267: '초기화 중': 'size_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  UI.cpp
+  main.cpp
+  코드를 생성하고 있습니다...
+  0525.vcxproj -> C:\Users\USER\Desktop\쥬신국비내용\0525\x64\Debug\0525.exe
