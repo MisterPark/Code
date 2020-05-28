@@ -119,7 +119,7 @@ GameObject * ObjectManager::GetNearbyObject(GameObject * ref)
 
 	
 	GameObject* target = nullptr;
-	int offset = 2;
+	int offset = 4;
 	auto iter = manager->list.begin();
 	auto end = manager->list.end();
 
