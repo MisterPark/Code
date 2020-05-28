@@ -1,13 +1,22 @@
 #pragma once
 #include "UI.h"
+
 class TextBox : public UI
 {
+private:
+	TextBox();
+	~TextBox();
+	
+public:
 	virtual void Initialize();
 	virtual void Render();
 	virtual void Update();
 	virtual void Event();
-public:
 
+	static TextBox* GetInstance();
+	static void Show();
+	static void Show(const char* _text);
+	static void Hide();
 	void EnqueueText(const char* _text);
 	void SetText(const char* _text);
 	void SetType(UI_TYPE type);

@@ -1,5 +1,5 @@
 #include "ObjcetManager.h"
-
+#include "Input.h"
 
 ObjectManager* manager = nullptr;
 
@@ -22,6 +22,17 @@ ObjectManager * ObjectManager::GetInstance()
 
 void ObjectManager::Update()
 {
+	// list를 순회하는 중에 push를 하게되면 iter가 터져버린다.
+	// 그래서 waiting Queue에 생성할 Object를 넣어놓고
+	// 다음 프레임에서 Update 호출시 waiting Queue에서 빼서
+	// list에 push 한다.
+	GameObject* go = nullptr;
+	while (manager->waitingQueue.Dequeue(&go))
+	{
+		manager->list.push_back(go);
+	}
+
+	// 순회하며 Update
 	for (auto iter = manager->list.begin(); iter != manager->list.end(); ++iter)
 	{
 		(*iter)->Update();
@@ -42,25 +53,24 @@ GameObject * ObjectManager::CreateObject(ObjectType type)
 
 	switch (type)
 	{
-	case PLAYER:
+	case ObjectType::PLAYER:
 		go = new Player();
 		break;
-	case MONSTER:
+	case ObjectType::MONSTER:
 		go = new Monster();
 		break;
-	case NON_PLAYER_CHARACTER:
+	case ObjectType::NON_PLAYER_CHARACTER:
 		go = new NPC();
 		break;
-	case TEXT_BOX:
-		go = new TextBox();
-		break;
+	case ObjectType::TEXT_BOX:
+		return TextBox::GetInstance();
 	default:
 		return nullptr;
 	}
 
 	go->Initialize();
 
-	manager->list.push_back(go);
+	ObjectManager::EnqueueObject(go);
 
 	return go;
 }
@@ -80,41 +90,53 @@ void ObjectManager::DeleteObject(GameObject * target)
 	delete target;
 }
 
+bool ObjectManager::FindObject(GameObject* target)
+{
+	auto iter = manager->list.begin();
+	auto end = manager->list.end();
+	for (; iter != end; ++iter)
+	{
+		if ((*iter) == target)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+void ObjectManager::EnqueueObject(GameObject* target)
+{
+	if (ObjectManager::FindObject(target)) return;
+
+	manager->waitingQueue.Enqueue(target);
+
+}
+
 GameObject * ObjectManager::GetNearbyObject(GameObject * ref)
 {
-	vector<GameObject*> list = manager->list;
+
+	if (!ObjectManager::FindObject(ref)) return nullptr;
+
 	
-	bool isInvalidObject = false;
-
-	auto iter = list.begin();
-	for (; iter != list.end(); ++iter)
-	{
-		if ((*iter) != ref) continue;
-
-		isInvalidObject = true;
-		break;
-	}
-
-	if (!isInvalidObject) return nullptr;
-
 	GameObject* target = nullptr;
 	int offset = 2;
+	auto iter = manager->list.begin();
+	auto end = manager->list.end();
 
-	iter = list.begin();
-	for (; iter != list.end(); ++iter)
+	for (; iter != end; ++iter)
 	{
 		int x = (*iter)->x;
 		int y = (*iter)->y;
 
 		if ((*iter) == ref) continue;
-		if (ref->x < x + offset) continue;
-		if (ref->x > x - offset) continue;
-		if (ref->y < y + offset) continue;
-		if (ref->y > y - offset) continue;
+		if (ref->x > x + offset) continue;
+		if (ref->x < x - offset) continue;
+		if (ref->y > y + offset) continue;
+		if (ref->y < y - offset) continue;
 
 		target = (*iter);
-		return target;
+		break;
 	}
 
-	return nullptr;
+	return target;
 }

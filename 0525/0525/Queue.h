@@ -10,7 +10,7 @@ public:
 	{
 		Node* next = nullptr;
 		Node* prev = nullptr;
-		T data;
+		T data = 0;
 	};
 
 	Queue()

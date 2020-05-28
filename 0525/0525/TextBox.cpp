@@ -2,6 +2,20 @@
 #include <iostream>
 #include <Windows.h>
 #include "GameData.h"
+#include "Input.h"
+#include "ObjcetManager.h"
+
+TextBox* textBox = nullptr;
+
+TextBox::TextBox()
+{
+	Initialize();
+	ObjectManager::EnqueueObject(this);
+}
+
+TextBox::~TextBox()
+{
+}
 
 void TextBox::Initialize()
 {
@@ -9,8 +23,8 @@ void TextBox::Initialize()
 	this->w = 120;
 	this->h = 10;
 	this->y = 20;
-	this->isEnable = true;
-	this->isVisible = true;
+	this->isEnable = false;
+	this->isVisible = false;
 }
 
 void TextBox::Render()
@@ -24,18 +38,27 @@ void TextBox::Render()
 void TextBox::Update()
 {
 	if (!isEnable) return;
-	char* str = nullptr;
-	if (GetAsyncKeyState(VK_SPACE) & 0x0001)
-	{
-		if (textQ.Dequeue(&str))
-		{
-			SetText(str);
-		}
-	}
+
 
 	// 출력대기를 모두 출력했다면.
 	if (strcmp(text, wait) == 0)
 	{
+		if (Input::GetKey(VK_SPACE))
+		{
+			char* str = nullptr;
+			if (textQ.Dequeue(&str))
+			{
+				SetText(str);
+			}
+			else
+			{
+				memset(text, 0, 100);
+				memset(wait, 0, 100);
+				Hide();
+			}
+		}
+		
+		
 		write = 0;
 		return;
 	}
@@ -52,6 +75,33 @@ void TextBox::Update()
 
 void TextBox::Event()
 {
+}
+
+TextBox* TextBox::GetInstance()
+{
+	if (textBox == nullptr)
+	{
+		textBox = new TextBox();
+	}
+	return textBox;
+}
+
+void TextBox::Show()
+{
+	textBox->isVisible = true;
+	textBox->isEnable = true;
+}
+
+void TextBox::Show(const char* _text)
+{
+	textBox->isVisible = true;
+	textBox->isEnable = true;
+	textBox->SetText(_text);
+}
+
+void TextBox::Hide()
+{
+	textBox->isVisible = false;
 }
 
 void TextBox::EnqueueText(const char * _text)

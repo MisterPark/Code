@@ -20,6 +20,7 @@
 #include "Screen.h"
 #include "ConsoleCursor.h"
 #include "ObjcetManager.h"
+#include "Input.h"
 
 using namespace std;
 
@@ -29,7 +30,6 @@ using namespace std;
 //================================================
 // 전역
 //================================================
-Screen* screen = Screen::GetInstance();
 bool isShutdown = false;
 
 Player * player;
@@ -42,10 +42,7 @@ TextBox* textBar;
 
 void Initialize();
 void FrameControl();
-void Input();
 void Render(); // 모든 오브젝트 그리고 출력
-
-
 
 //================================================
 // 메인 
@@ -57,7 +54,7 @@ int main()
 	for (;!isShutdown;)
 	{
 		FrameControl();
-		Input();
+		Input::Update();
 		ObjectManager::Update();
 		Render();
 	}
@@ -69,9 +66,11 @@ int main()
 //================================================
 void Initialize()
 {
+	Input::GetInstance();
 	Screen::GetInstance();
 	ConsoleCursor::Initialize();
 	ObjectManager::GetInstance();
+	TextBox::GetInstance();
 
 	// UI 테스트
 	
@@ -88,13 +87,6 @@ void FrameControl()
 	Sleep(20);
 }
 
-void Input()
-{
-	if (GetAsyncKeyState(VK_ESCAPE) & 0x0001)
-	{
-		isShutdown = true;
-	}
-}
 
 void Render()
 {

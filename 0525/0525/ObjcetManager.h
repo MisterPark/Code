@@ -6,10 +6,11 @@
 #include "UI.h"
 #include "TextBox.h"
 #include "NPC.h"
+#include "Queue.h"
 
 using namespace std;
 
-enum ObjectType
+enum class ObjectType : char
 {
 	PLAYER,
 	MONSTER,
@@ -31,9 +32,13 @@ public:
 
 	static GameObject* CreateObject(ObjectType type);
 	static void DeleteObject(GameObject* target);
+	static bool FindObject(GameObject* target);
+	static void EnqueueObject(GameObject* target);
+
 	static GameObject* GetNearbyObject(GameObject* ref);
 
 private:
 	vector<GameObject*> list;
+	Queue<GameObject*> waitingQueue;
 };
 

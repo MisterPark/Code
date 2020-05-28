@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{770C9882-0106-4826-8EFE-0F2C97C7FD9C}</ProjectGuid>
     <RootNamespace>My0525</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -41,7 +41,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -119,6 +119,7 @@
     <ClCompile Include="ConsoleCursor.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="TextBox.cpp" />
@@ -134,6 +135,7 @@
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="GameData.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="TextBox.h" />
     <ClInclude Include="Monster.h" />
